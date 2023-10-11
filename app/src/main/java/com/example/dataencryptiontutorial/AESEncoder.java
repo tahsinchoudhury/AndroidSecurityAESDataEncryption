@@ -9,11 +9,10 @@ import javax.crypto.spec.GCMParameterSpec;
 import java.util.Base64;
 
 public class AESEncoder {
-    private SecretKey key;
     private final int KEY_SIZE = 128;
     private final int T_LEN = 128;
     private Cipher encryptionCipher;
-
+    private SecretKey key;
     public void init() throws Exception {
         KeyGenerator generator = KeyGenerator.getInstance("AES");
         generator.init(KEY_SIZE);

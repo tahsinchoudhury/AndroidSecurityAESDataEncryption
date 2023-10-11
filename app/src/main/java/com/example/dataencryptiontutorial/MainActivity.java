@@ -35,8 +35,8 @@ public class MainActivity extends AppCompatActivity {
         TextView encryptedTextView = (TextView) findViewById(R.id.encryptedText);
         TextView decryptedTextView = (TextView) findViewById(R.id.decryptedText);
 
-
         encryptButton.setOnClickListener(view -> {
+            hideKeyboard(view);
             String message = editText.getText().toString();
             try {
                 encoder = new AESEncoder();
@@ -44,6 +44,7 @@ public class MainActivity extends AppCompatActivity {
                 encodedMessage = encoder.encrypt(message);
             } catch (Exception e) {
                 Log.d(TAG, "onCreate: Encryption error: " + e.getMessage());
+                displayErrorMessage(encryptedTextView, "Sorry. Could not be encrypted.");
                 return;
             }
             encryptedTextView.setText("Encrypted Text: " + encodedMessage);
@@ -55,8 +56,7 @@ public class MainActivity extends AppCompatActivity {
             try {
                 decryptedMessage = encoder.decrypt(cipherText);
             } catch (Exception e) {
-                decryptedTextView.setText("Sorry, could not be decrypted. Please try again.");
-                decryptedTextView.setTextColor(Color.RED);
+                displayErrorMessage(decryptedTextView, "Sorry. Could not be decrypted.");
                 Log.d(TAG, "onCreate: Decryption error: " + e.getMessage());
                 return;
             }
@@ -73,5 +73,10 @@ public class MainActivity extends AppCompatActivity {
             InputMethodManager imm = (InputMethodManager)getSystemService(Context.INPUT_METHOD_SERVICE);
             imm.hideSoftInputFromWindow(view.getWindowToken(), 0);
         }
+    }
+
+    private void displayErrorMessage(TextView textView, String message) {
+        textView.setText(message);
+        textView.setTextColor(Color.RED);
     }
 }
